@@ -64,16 +64,25 @@
   .head-row{display:flex;justify-content:space-between;align-items:flex-end;gap:32px;flex-wrap:wrap;margin-bottom:48px;}
   .mono{font-family:var(--mono);}
 
-  .btn{display:inline-flex;align-items:center;justify-content:center;gap:12px;font-family:var(--sans);font-weight:700;font-stretch:108%;font-size:14px;letter-spacing:.08em;text-transform:uppercase;padding:17px 28px;min-height:54px;border-radius:2px;color:var(--white);background:var(--orange);border:1px solid var(--orange);transition:background .25s var(--ease),border-color .25s var(--ease),color .25s var(--ease),transform .25s var(--ease);white-space:nowrap;}
+  .btn{position:relative;overflow:hidden;isolation:isolate;display:inline-flex;align-items:center;justify-content:center;gap:12px;font-family:var(--sans);font-weight:700;font-stretch:108%;font-size:14px;letter-spacing:.08em;text-transform:uppercase;padding:17px 28px;min-height:54px;border-radius:2px;color:var(--white);background:var(--orange);border:1px solid var(--orange);transition:background .25s var(--ease),border-color .25s var(--ease),color .25s var(--ease),transform .3s var(--ease),box-shadow .3s var(--ease);white-space:nowrap;}
   .btn svg.i{width:18px;height:18px;transition:transform .25s var(--ease);}
-  .btn:hover{background:var(--orange-dk);border-color:var(--orange-dk);}
+  /* hover shine: a light sweep across the face plus a diamond glint in the corner */
+  .btn::after{content:"";position:absolute;z-index:1;top:-30%;bottom:-30%;left:-80%;width:50%;background:linear-gradient(100deg,rgba(255,255,255,0) 0%,rgba(255,255,255,.16) 30%,rgba(255,255,255,.7) 50%,rgba(255,255,255,.16) 70%,rgba(255,255,255,0) 100%);transform:skewX(-20deg);pointer-events:none;}
+  .btn:hover::after{left:135%;transition:left .8s cubic-bezier(.3,.6,.2,1);}
+  .btn::before{content:"";position:absolute;z-index:2;top:6px;right:8px;width:11px;height:11px;background:#fff;clip-path:polygon(50% 0,62% 38%,100% 50%,62% 62%,50% 100%,38% 62%,0 50%,38% 38%);filter:drop-shadow(0 0 3px rgba(255,255,255,.9));opacity:0;transform:scale(0) rotate(-45deg);transition:opacity .2s,transform .3s var(--ease);pointer-events:none;}
+  .btn:hover::before{opacity:1;transform:scale(1) rotate(45deg);transition-delay:.35s;animation:glint 1.6s ease-in-out .65s infinite;}
+  @keyframes glint{0%,100%{transform:scale(1) rotate(45deg);opacity:1;}50%{transform:scale(.45) rotate(90deg);opacity:.55;}}
+  .btn:hover{background:var(--orange);border-color:#FF9A6B;transform:translateY(-2px);box-shadow:inset 0 1px 0 rgba(255,255,255,.35),0 0 0 3px rgba(255,116,66,.22),0 12px 28px -8px rgba(216,67,21,.75),0 0 26px rgba(255,116,66,.45);}
+  .btn:active{transform:translateY(0);}
   .btn:hover svg.i.arr{transform:translateX(4px);}
   .btn.dark{background:var(--ink);border-color:var(--ink);}
-  .btn.dark:hover{background:var(--graphite);border-color:var(--graphite);}
+  .btn.dark:hover{background:var(--graphite);border-color:var(--graphite);box-shadow:inset 0 1px 0 rgba(255,255,255,.18),0 12px 26px -10px rgba(15,15,16,.6);}
   .btn.line{background:transparent;color:var(--ink);border-color:var(--ink);}
-  .btn.line:hover{background:var(--ink);color:var(--white);}
+  .btn.line:hover{background:var(--ink);color:var(--white);box-shadow:0 12px 26px -10px rgba(15,15,16,.5);}
   .btn.line-light{background:transparent;color:var(--white);border-color:rgba(255,255,255,.45);}
-  .btn.line-light:hover{background:var(--white);color:var(--ink);border-color:var(--white);}
+  .btn.line-light:hover{background:var(--white);color:var(--ink);border-color:var(--white);box-shadow:0 0 0 3px rgba(255,255,255,.15),0 0 26px rgba(255,255,255,.3);}
+  .btn.line:hover::before,.btn.line-light:hover::before{background:var(--orange);filter:drop-shadow(0 0 3px rgba(255,116,66,.8));}
+  .btn.line-light::after{background:linear-gradient(100deg,rgba(216,67,21,0) 0%,rgba(216,67,21,.12) 35%,rgba(255,255,255,.55) 50%,rgba(216,67,21,.12) 65%,rgba(216,67,21,0) 100%);}
   .btn.block{width:100%;}
   .link{font-weight:700;font-size:14px;letter-spacing:.06em;text-transform:uppercase;color:var(--orange-dk);display:inline-flex;align-items:center;gap:8px;transition:gap .25s var(--ease);}
   .link svg.i{width:16px;height:16px;}
@@ -582,6 +591,7 @@
   @media (prefers-reduced-motion:reduce){
     *{transition:none !important;scroll-behavior:auto !important;}
     .js .reveal{opacity:1;transform:none;}
+    .btn::before,.btn::after{display:none;}
   }
 </style>
 </head>
